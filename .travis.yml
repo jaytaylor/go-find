@@ -1,0 +1,10 @@
+language: go
+go:
+  # n.b. For golang release history, see https://go.dev/doc/devel/release
+  - tip
+  - "1.18"
+  - "1.17"
+notifications:
+  email:
+    on_success: change
+    on_failure: always
