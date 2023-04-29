@@ -47,7 +47,7 @@ func init() {
 	fs.Usage = func() {
 		fmt.Printf("Usage:\n\n\t%s [flags..] [paths...]\n", os.Args[0])
 		fmt.Print("\n\tAvailable predicate tests:\n")
-		flag.VisitAll(func(f *flag.Flag) {
+		fs.VisitAll(func(f *flag.Flag) {
 			fmt.Printf("\n\t-%v    \t%v\n", f.Name, f.Usage) // f.Name, f.Value
 		})
 	}
