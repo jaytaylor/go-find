@@ -40,7 +40,7 @@ func init() {
 		To search for more than one type at once, you can supply the combined list of type letters separated by a comma `+"`"+`,' (GNU extension).`)
 	fs.StringVar(&Name, "name", "", `Base of file name (the path with the leading directories removed) matches shell pattern pattern.  Because the leading directories are removed, the file names considered for a match with -name will never include a slash, so `+"`"+`-name a/b' will never match anything (you probably need to use -path instead).`)
 	fs.StringVar(&WholeName, "wholename", "", `File name matches shell glob pattern.`)
-	fs.StringVar(&Regex, "rege", "", "File name matches regular expression pattern.  This is a match on the whole path, not a search.")
+	fs.StringVar(&Regex, "regex", "", "File name matches regular expression pattern.  This is a match on the whole path, not a search.")
 	fs.BoolVar(&Empty, "empty", false, "File is empty and is either a regular file or a directory.")
 	fs.BoolVar(&Print0, "print0", false, "Print the full file name on the standard output, followed by a null character (instead of the newline character).  This allows file names that contain newlines or other types of white space to be correctly interpreted by programs that process the find output.  This option corresponds to the -0 option of xargs.")
 
