@@ -22,6 +22,7 @@ var (
 	Regex     string
 	Empty     bool
 	Print0    bool
+	Mount     bool
 )
 
 var fs *flag.FlagSet
@@ -42,6 +43,7 @@ func init() {
 	fs.StringVar(&WholeName, "wholename", "", `File name matches shell glob pattern.`)
 	fs.StringVar(&Regex, "regex", "", "File name matches regular expression pattern.  This is a match on the whole path, not a search.")
 	fs.BoolVar(&Empty, "empty", false, "File is empty and is either a regular file or a directory.")
+	fs.BoolVar(&Mount, "mount", false, "Restrict the search to the given path filesystem.")
 	fs.BoolVar(&Print0, "print0", false, "Print the full file name on the standard output, followed by a null character (instead of the newline character).  This allows file names that contain newlines or other types of white space to be correctly interpreted by programs that process the find output.  This option corresponds to the -0 option of xargs.")
 
 	fs.Usage = func() {
@@ -89,6 +91,7 @@ func main() {
 	if MaxDepth != math.MinInt {
 		finder = finder.MinDepth(MinDepth)
 	}
+
 	if Type != "" {
 		finder = finder.Type(Type)
 	}
@@ -97,6 +100,9 @@ func main() {
 	}
 	if WholeName != "" {
 		finder = finder.WholeName(WholeName)
+	}
+	if Mount {
+		finder = finder.Mount()
 	}
 	if Regex != "" {
 		expr, err := regexp.Compile(Regex)

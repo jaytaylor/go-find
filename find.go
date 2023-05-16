@@ -1,6 +1,8 @@
 package find
 
-import "regexp"
+import (
+	"regexp"
+)
 
 type Find struct {
 	Paths      []string
@@ -76,6 +78,16 @@ func (finder *Find) Regex(expr *regexp.Regexp) *Find {
 
 func (finder *Find) Empty() *Find {
 	c := &emptyPredicate{}
+	finder.predicates = append(finder.predicates, c)
+	return finder
+}
+
+func (finder *Find) Mount() *Find {
+	fsType := getFileSystemType(finder.Paths...)
+	c := &mountPredicate{
+		path:   finder.Paths,
+		fsType: fsType,
+	}
 	finder.predicates = append(finder.predicates, c)
 	return finder
 }
