@@ -1,6 +1,7 @@
 package find
 
 import (
+	"errors"
 	"fmt"
 	"syscall"
 )
@@ -211,7 +212,7 @@ var FsTypeMap = map[int64]string{
 	ZFS_SUPER_MAGIC:             "zfs",                 /* 0x2FC12FC1 local */
 }
 
-var ErrorFSType error = fmt.Errorf("filesystem type")
+var ErrorFSType error = errors.New("filesystem type")
 
 type mountPredicate struct {
 	path   []string
