@@ -1,14 +1,15 @@
 package find
 
 import (
+	"errors"
 	"fmt"
 	"os"
 )
 
 var (
-	ErrorEmptyPredStat    = fmt.Errorf("emptyPredicate: lstat")
-	ErrorEmptyPredOpen    = fmt.Errorf("emptyPredicate: opening")
-	ErrorEmptyPredListing = fmt.Errorf("emptyPredicate: listing")
+	ErrorEmptyPredStat    = errors.New("emptyPredicate: lstat")
+	ErrorEmptyPredOpen    = errors.New("emptyPredicate: opening")
+	ErrorEmptyPredListing = errors.New("emptyPredicate: listing")
 )
 
 type emptyPredicate struct{}
@@ -38,7 +39,7 @@ func (p *emptyPredicate) Match(root string, path string) (bool, error) {
 		dirs, err := f.ReadDir(-1)
 		f.Close()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprintf(os.Stderr, "error: %s\n", err.Error())
 			return false, PredicateError{errType: ErrorEmptyPredListing, errMessage: err.Error()}
 		}
 		return len(dirs) == 0, nil

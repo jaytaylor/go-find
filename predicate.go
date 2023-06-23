@@ -16,7 +16,7 @@ type PredicateError struct {
 }
 
 func (p PredicateError) Error() string {
-	return fmt.Sprint(fmt.Errorf("%q: %s", p.errType, p.errMessage))
+	return fmt.Sprintf("%q: %s", p.errType, p.errMessage)
 }
 
 type predicates []predicate
@@ -36,7 +36,7 @@ func (ps predicates) Evaluate(root string) ([]string, error) {
 					if pe.errType == ErrorFSType {
 						return filepath.SkipDir
 					} else {
-						fmt.Println(pe.errMessage)
+						fmt.Fprintf(os.Stderr, "error: %s\n", pe.errMessage)
 						return nil
 					}
 				}
