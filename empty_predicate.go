@@ -1,8 +1,15 @@
 package find
 
 import (
+	"errors"
 	"fmt"
 	"os"
+)
+
+var (
+	ErrorEmptyPredStat    = errors.New("emptyPredicate: lstat")
+	ErrorEmptyPredOpen    = errors.New("emptyPredicate: opening")
+	ErrorEmptyPredListing = errors.New("emptyPredicate: listing")
 )
 
 type emptyPredicate struct{}
@@ -10,7 +17,7 @@ type emptyPredicate struct{}
 func (p *emptyPredicate) Match(root string, path string) (bool, error) {
 	info, err := os.Lstat(path)
 	if err != nil {
-		return false, fmt.Errorf("emptyPredicate: lstat %q: %s", path, err)
+		return false, PredicateError{errType: ErrorEmptyPredStat, errMessage: err.Error()}
 	}
 
 	var (
@@ -27,12 +34,13 @@ func (p *emptyPredicate) Match(root string, path string) (bool, error) {
 	if info.IsDir() {
 		f, err := os.Open(path)
 		if err != nil {
-			return false, fmt.Errorf("emptyPredicate: opening %q: %s", info.Name(), err)
+			return false, PredicateError{errType: ErrorEmptyPredOpen, errMessage: err.Error()}
 		}
 		dirs, err := f.ReadDir(-1)
 		f.Close()
 		if err != nil {
-			return false, fmt.Errorf("emptyPredicate: listing %q: %s", info.Name(), err)
+			fmt.Fprintf(os.Stderr, "error: %s\n", err.Error())
+			return false, PredicateError{errType: ErrorEmptyPredListing, errMessage: err.Error()}
 		}
 		return len(dirs) == 0, nil
 	} else {
