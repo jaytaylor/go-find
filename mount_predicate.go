@@ -3,6 +3,7 @@ package find
 import (
 	"errors"
 	"fmt"
+	"os"
 	"syscall"
 )
 
@@ -238,7 +239,7 @@ func getFileSystemType(paths ...string) []string {
 		var stat syscall.Statfs_t
 		err := syscall.Statfs(path, &stat)
 		if err != nil {
-			fmt.Printf("stat failed: %v", err)
+			fmt.Fprintf(os.Stderr, "state failed: %v\n", err)
 			continue
 		}
 
